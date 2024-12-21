@@ -1,20 +1,16 @@
-services: 
-  terraria-server:
-    image: hexlo/terraria-server-docker:latest
-    container_name: terraria-server
+name: terraria
+services:
+  server:
+    build:
+      context: ./build
     restart: unless-stopped
     stdin_open: true
-    tty: true     
+    tty: true
     ports:
-      - 7779:7777
+      - 7777:7777
     volumes:
-      - type: bind
-        source: ./Worlds
-        target: /root/.local/share/Terraria/Worlds
+      - ./worlds:/opt/terraria/Worlds
+      - ./config/server-config.conf:/opt/terraria/server-config.conf
+      - ./config/banlist.txt:/opt/terraria/banlist.txt
     environment:
-      # - world=/root/.local/share/Terraria/Worlds/newworld.wld
-      - autocreate=2
-      - difficulty=2
-      - worldname=newworld
-      - password=hello
-      - motd="Welcome to my server! :)"
+      TERRARIA_VERSION: latest

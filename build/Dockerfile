@@ -9,6 +9,7 @@ RUN true \
     && apk add --no-cache curl unzip bash \
     && /usr/local/bin/install.sh \
     && chmod 755 "/opt/terraria/TerrariaServer.bin.x86_64" \
+    && touch -a "/opt/terraria/banlist.txt" \
     ;
 
 EXPOSE 7777
