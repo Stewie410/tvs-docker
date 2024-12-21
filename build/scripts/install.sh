@@ -18,7 +18,7 @@ unpack() {
     unzip "${zip}" -d "${stage}" || return 1
     find "${stage}/${TERRARIA_VERSION}/Linux" \
         -mindepth 1 \
-        -exec mv {} "${TERRARIA_DIR}/" \
+        -exec mv {} "/opt/terraria/" \
         \;
 
     rm -rf "${zip}" "${stage}"
@@ -30,10 +30,10 @@ main() {
     if [[ "${TERRARIA_VERSION:=latest}" == "latest" ]]; then
         TERRARIA_VERSION="$(latest)"
         printf 'Using latest Terraria version: %s\n' "${TERRARIA_VERSION}"
-        export TERRARIA_VERSION="${TERRARIA_VERSION//./}"
     fi
 
-    printf '%s\n' "${TERRARIA_VERSION}" > "${TERRARIA_DIR}/terraria-version.txt"
+    export TERRARIA_VERSION="${TERRARIA_VERSION//./}"
+    printf '%s\n' "${TERRARIA_VERSION}" > "/opt/terraria/terraria-version.txt"
     unpack
 }
 
