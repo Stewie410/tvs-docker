@@ -1,22 +1,22 @@
-FROM alpine:3.20
+# FROM alpine:3.20
+FROM debian:10-slim
 
-ENV TERRARIA_VERSION="latest"
+ENV TERRARIA_VERSION="1.4.4.9"
 
 COPY --chown=root:root --chmod=755 ./scripts/*.sh /usr/local/bin/
-COPY --chown=root:root ./defaults.conf "/opt/terraria/server-config.conf"
 
 RUN true \
-    && apk add --no-cache curl unzip bash \
+    && apt-get update -y \
+    && apt-get install -y unzip curl \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* \
     && /usr/local/bin/install.sh \
-    && chmod 755 "/opt/terraria/TerrariaServer.bin.x86_64" \
-    && touch -a "/opt/terraria/banlist.txt" \
     ;
+
+COPY --chown=root:root ./defaults.conf "/opt/terraria/server-config.conf"
 
 WORKDIR /opt/terraria
 VOLUME [ "/opt/terraria/worlds" ]
 
 EXPOSE 7777
-ENTRYPOINT [ "/opt/terraria/TerrariaServer.bin.x86_64", \
-    "-config", "/opt/terraria/server-config.conf" \, \
-    "-port", "7777" \
-    ]
+ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]

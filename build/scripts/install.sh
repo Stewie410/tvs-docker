@@ -11,15 +11,12 @@ unpack() {
     zip="$(mktemp)"
     prefix="https://terraria.org/api/download/pc-dedicated-server"
 
-    curl -sfo "${zip}" "${prefix}/terraria-server-${TERRARIA_VERSION}.zip" || \
+    curl -sfo "${zip}" "${prefix}/terraria-server-${TERRARIA_VERSION//./}.zip" || \
         return 1
 
     stage="$(mktemp -d)"
     unzip "${zip}" -d "${stage}" || return 1
-    find "${stage}/${TERRARIA_VERSION}/Linux" \
-        -mindepth 1 \
-        -exec mv {} "/opt/terraria/" \
-        \;
+    mv --force "${stage}/${TERRARIA_VERSION//./}/Linux" "/opt/terraria"
 
     rm -rf "${zip}" "${stage}"
 
@@ -27,14 +24,12 @@ unpack() {
 }
 
 main() {
-    if [[ "${TERRARIA_VERSION:=latest}" == "latest" ]]; then
-        TERRARIA_VERSION="$(latest)"
-        printf 'Using latest Terraria version: %s\n' "${TERRARIA_VERSION}"
-    fi
+    unpack || return 1
 
-    export TERRARIA_VERSION="${TERRARIA_VERSION//./}"
-    printf '%s\n' "${TERRARIA_VERSION}" > "/opt/terraria/terraria-version.txt"
-    unpack
+    touch -a "/opt/terraria/banlist.txt"
+    chmod +x "/opt/terraria/TerrariaServer.bin.x86_64"
+
+    printf '%s\n' "${TERRARIA_VERSION//./}" > "/opt/terraria/terraria-version.txt"
 }
 
 main

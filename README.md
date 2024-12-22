@@ -1,6 +1,6 @@
 # 🌲 tvs-docker
 
-An alpine-based terraria server container & compose template; based on [`hexlo/terraria-server-docker`](https://github.com/hexlo/terraria-server-docker).
+An debian-based terraria server container & compose template; based (loosely) on [`hexlo/terraria-server-docker`](https://github.com/hexlo/terraria-server-docker).
 
 ## 📦 Dependencies
 
@@ -31,21 +31,30 @@ Here's a quick breakdown of each of these settings:
 | `upnp` | Use UPnP to try opening server port automatically | `0`: disable, `1`: enable |
 | `npcstream` | Reduce enemy skipping but increase bandwidth usage | `1+` |
 | `priority` | Server priority | `0`: realtime, `1`: high, `2`: above normal, `3`: normal, `4`: below normal, `5`: idle |
-| `journeypermission_time_setfrozen` | Who can freeze time | `0`: no players, `1`: host, `2`: everyone |
-| `journeypermission_time_setdawn` | Who can set time to Dawn | `0`: no players, `1`: host, `2`: everyone |
-| `journeypermission_time_setnoon` | Who can set time to Noon | `0`: no players, `1`: host, `2`: everyone |
-| `journeypermission_time_setdusk` | Who can set time to Dusk | `0`: no players, `1`: host, `2:` everyone |
-| `journeypermission_time_setmidnight` | Who can set time to Midnight | `0`: no players, `1`: host, `2`: everyone |
-| `journeypermission_time_setspeed` | Who can adjust the time speed | `0`: no players, `1`: host, `2`: everyone |
-| `journeypermission_godmode` | Who can use godmode | `0`: no players, `1`: host, `2`: everyone |
-| `journeypermission_wind_setstrength` | Who can set the wind strength | `0`: no players, `1`: host, `2`: everyone |
-| `journeypermission_wind_setfrozen` | Who can freeze the wind | `0`: no players, `1`: host, `2`: everyone |
-| `journeypermission_rain_setstrength` | Who can set the rain strength | `0`: no players, `1`: host, `2`: everyone |
-| `journeypermission_rain_setfrozen` | Who can freeze the rain | `0`: no players, `1`: host, `2`: everyone |
-| `journeypermission_increaseplacementrange` | Who can change the placement range | `0`: no players, `1`: host, `2`: everyone |
-| `journeypermission_setdifficulty` | Who can change the difficulty | `0`: no players, `1`: host, `2`: everyone |
-| `journeypermission_biomespread_setfrozen` | Who can toggle biome spread | `0`: no players, `1`: host, `2`: everyone |
-| `journeypermission_setspawnrate` | Who can change spawn rate | `0`: no players, `1`: host, `2`: everyone |
+
+In addition to the above, the following `journeypermission_x` options are available, allowing specification on which players are granted access:
+
+- `0`: No player(s)
+- `1`: Server Host
+- `2`: All player(s)
+
+| Option | Description |
+| :----- | :---------- |
+| `journeypermission_time_setfrozen` | Who can freeze time |
+| `journeypermission_time_setdawn` | Who can set time to Dawn |
+| `journeypermission_time_setnoon` | Who can set time to Noon |
+| `journeypermission_time_setdusk` | Who can set time to Dusk |
+| `journeypermission_time_setmidnight` | Who can set time to Midnight |
+| `journeypermission_time_setspeed` | Who can adjust the time speed |
+| `journeypermission_godmode` | Who can use godmode |
+| `journeypermission_wind_setstrength` | Who can set the wind strength |
+| `journeypermission_wind_setfrozen` | Who can freeze the wind |
+| `journeypermission_rain_setstrength` | Who can set the rain strength |
+| `journeypermission_rain_setfrozen` | Who can freeze the rain |
+| `journeypermission_increaseplacementrange` | Who can change the placement range |
+| `journeypermission_setdifficulty` | Who can change the difficulty |
+| `journeypermission_biomespread_setfrozen` | Who can toggle biome spread |
+| `journeypermission_setspawnrate` | Who can change spawn rate |
 
 For additional information on configuration options, please visit [the wiki](https://terraria.wiki.gg/wiki/Guide:Setting_up_a_Terraria_server#Making_a_configuration_file).
 In addition, [`terrariaconfig.dotslashsteve.sh`](https://terrariaconfig.dotslashsteve.sh/) can be used to generate a config file for you.
@@ -56,7 +65,11 @@ Breaking from the original project, this fork only provides a single environment
 
 | Variable | Default Value | Description | Example |
 | :------- | :------------ | :---------- | :------ |
-| `TERRARIA_VERSION` | `latest` | Specify the semver version of Terraria to install, or `latest` to use the most recent version | `1.4.4.9` or `latest` |
+| `TERRARIA_VERSION` | `1.4.4.9` | Semver terraria version to install | `1.4.4.9` |
+
+### 🏃 Runtime
+
+Additional [cli options](https://terraria.wiki.gg/wiki/Server#Command-line_parameters) can also be passed with the `command:` option in compose.  Please note that `-config` & `-port` are already defined.
 
 ## 🌎 World Generation
 
