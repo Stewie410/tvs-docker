@@ -12,7 +12,11 @@ RUN true \
     && touch -a "/opt/terraria/banlist.txt" \
     ;
 
+WORKDIR /opt/terraria
+VOLUME [ "/opt/terraria/worlds" ]
+
 EXPOSE 7777
 ENTRYPOINT [ "/opt/terraria/TerrariaServer.bin.x86_64", \
-    "-config", "/opt/terraria/server-config.conf" \
+    "-config", "/opt/terraria/server-config.conf" \, \
+    "-port", "7777" \
     ]
